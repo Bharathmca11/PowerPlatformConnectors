@@ -1,0 +1,67 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Microsoft Graph Add User",
+    "version": "1.0.0",
+    "description": "Creates a user using Microsoft Graph API"
+  },
+  "host": "graph.microsoft.com",
+  "basePath": "/v1.0",
+  "schemes": ["https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "Create user",
+        "operationId": "CreateUser",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "accountEnabled": { "type": "boolean" },
+        "displayName": { "type": "string" },
+        "mailNickname": { "type": "string" },
+        "userPrincipalName": { "type": "string" },
+        "passwordProfile": {
+          "type": "object",
+          "properties": {
+            "password": { "type": "string" },
+            "forceChangePasswordNextSignIn": { "type": "boolean" }
+          }
+        }
+      },
+      "required": ["displayName", "userPrincipalName", "passwordProfile"]
+    }
+  },
+  "securityDefinitions": {
+    "aad": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+      "tokenUrl": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+      "scopes": {
+        "https://graph.microsoft.com/User.ReadWrite.All": "Create and manage users"
+      }
+    }
+  },
+  "security": [{ "aad": [] }]
+}
